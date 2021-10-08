@@ -18,7 +18,7 @@ SSL *ssl;
 
 void sighandler(int signum)
 {
-    printf("捕获信号 %d，跳出...\n", signum);
+    printf("\nCatching a signal %d，quit...\n", signum);
     /* 关闭 SSL 连接 */
     SSL_shutdown(ssl);
     /* 释放 SSL */
@@ -30,7 +30,7 @@ void sighandler(int signum)
     close(sockfd);
     /* 释放 CTX */
     SSL_CTX_free(ctx);
-    exit(0);
+    return;
 }
 
 int main(int argc, char **argv)
@@ -123,6 +123,7 @@ int main(int argc, char **argv)
     signal(SIGTERM, sighandler);
     signal(SIGQUIT, sighandler);
     signal(SIGKILL, sighandler);
+    signal(SIGTSTP, sighandler);
     while (1)
     {
 
